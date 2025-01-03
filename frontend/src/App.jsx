@@ -1,13 +1,15 @@
 import { Outlet } from "react-router-dom";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 
 function App() {
   return (
     <>
-      <h1>Header</h1>
-      <main className="min-h-screen">
+      <Navbar />
+      <main className="min-h-screen max-w-5xl mx-auto px-4 py-6 font-primary">
         <Outlet />
       </main>
-      <h1>Footer</h1>
+      <Footer />
     </>
   );
 }
