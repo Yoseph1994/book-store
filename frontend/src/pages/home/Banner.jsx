@@ -6,6 +6,7 @@ export default function Banner() {
         <h1 className="text-2xl font-bold md:text-5xl mb-3 sm:mb-7">
           New Releases This Week
         </h1>
+
         <p className="sm:mb-10 mb-5 w-full md:w-1/2">
           Lorem ipsum, dolor sit amet consectetur adipisicing elit. Impedit ad
           placeat doloremque sed voluptatibus sit architecto debitis, dolorum
