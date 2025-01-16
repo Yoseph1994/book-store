@@ -18,8 +18,8 @@ export const cartSlice = createSlice({
       if (existingItem) {
         existingItem.quantity += 1;
         Swal.fire({
-          title: "Item Already Exist",
-          icon: "success",
+          title: `Added ${existingItem.title} for ${existingItem.quantity} time`,
+          icon: "info",
           draggable: true,
         });
       } else {
