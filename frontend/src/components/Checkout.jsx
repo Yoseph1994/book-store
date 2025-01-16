@@ -1,8 +1,11 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
+import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 function Checkout() {
+  const currentUser = true; //TODO
+  const [isChecked, setIsChecked] = useState(true);
   const cartItems = useSelector((state) => state.cart.cartItems);
   const subtotal = useMemo(() => {
     return cartItems
@@ -13,6 +16,29 @@ function Checkout() {
       )
       .toFixed(2);
   }, [cartItems]);
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
+  const onSubmit = (data) => {
+    const newOrders = {
+      name: data.name,
+      email: currentUser?.email,
+      adress: {
+        city: data.city,
+        country: data.country,
+        state: data.state,
+        zipcode: data.zipcode,
+      },
+      phone: data.phone,
+      productIds: cartItems.map((item) => item?._id),
+      total: subtotal,
+    };
+    console.log(newOrders);
+  };
 
   return (
     <div className="min-h-screen p-6 bg-gray-100 flex items-center justify-center">
@@ -28,7 +54,7 @@ function Checkout() {
 
           <div className="bg-white rounded shadow-lg p-4 px-4 md:p-8 mb-6">
             <form
-              //   onSubmit={handleSubmit(onSubmit)}
+              onSubmit={handleSubmit(onSubmit)}
               className="grid gap-4 gap-y-2 text-sm grid-cols-1 lg:grid-cols-3 my-8"
             >
               <div className="text-gray-600">
@@ -44,6 +70,8 @@ function Checkout() {
                       type="text"
                       name="name"
                       id="name"
+                      placeholder="Full Name"
+                      {...register("name", { required: true })}
                       className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
                     />
                   </div>
@@ -56,8 +84,9 @@ function Checkout() {
                       id="email"
                       className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
                       disabled
-                      //   defaultValue={currentUser?.email}
+                      defaultValue={currentUser?.email}
                       placeholder="email@domain.com"
+                      // {...register("email", { required: true })}
                     />
                   </div>
                   <div className="md:col-span-5">
@@ -67,7 +96,8 @@ function Checkout() {
                       name="phone"
                       id="phone"
                       className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-                      placeholder="+123 456 7890"
+                      placeholder="+2519 66 74 13 03"
+                      {...register("phone", { required: true })}
                     />
                   </div>
 
@@ -78,7 +108,8 @@ function Checkout() {
                       name="address"
                       id="address"
                       className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-                      placeholder=""
+                      placeholder="Address"
+                      {...register("address", { required: true })}
                     />
                   </div>
 
@@ -89,7 +120,8 @@ function Checkout() {
                       name="city"
                       id="city"
                       className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-                      placeholder=""
+                      placeholder="City"
+                      {...register("city", { required: true })}
                     />
                   </div>
 
@@ -100,6 +132,7 @@ function Checkout() {
                         name="country"
                         id="country"
                         placeholder="Country"
+                        {...register("country", { required: true })}
                         className="px-4 appearance-none outline-none text-gray-800 w-full bg-transparent"
                       />
                       <button
@@ -145,6 +178,7 @@ function Checkout() {
                         name="state"
                         id="state"
                         placeholder="State"
+                        {...register("state", { required: true })}
                         className="px-4 appearance-none outline-none text-gray-800 w-full bg-transparent"
                       />
                       <button className="cursor-pointer outline-none focus:outline-none transition-all text-gray-300 hover:text-red-600">
@@ -187,7 +221,8 @@ function Checkout() {
                       name="zipcode"
                       id="zipcode"
                       className="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-                      placeholder=""
+                      placeholder="Zipcode"
+                      {...register("zipcode", { required: true })}
                     />
                   </div>
 
@@ -200,7 +235,7 @@ function Checkout() {
                         className="form-checkbox"
                       />
                       <label htmlFor="billing_same" className="ml-2 ">
-                        I am aggree to the{" "}
+                        I aggree to the{" "}
                         <Link className="underline underline-offset-2 text-blue-600">
                           Terms & Conditions
                         </Link>{" "}
@@ -215,8 +250,8 @@ function Checkout() {
                   <div className="md:col-span-5 text-right">
                     <div className="inline-flex items-end">
                       <button
-                        // disabled={!isChecked}
-                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                        disabled={!isChecked}
+                        className="bg-blue-500 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold py-2 px-4 rounded"
                       >
                         Place an Order
                       </button>
