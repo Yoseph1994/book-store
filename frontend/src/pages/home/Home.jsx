@@ -1,7 +1,8 @@
 import Recomended from "../../components/Recomended";
 import TopSellers from "../../components/TopSellers";
-import Banner from "./Banner";
+
 import News from "../../components/News";
+import Banner from "../../components/Banner";
 
 function Home() {
   return (

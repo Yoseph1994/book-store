@@ -11,7 +11,6 @@ import { Link } from "react-router-dom";
 function Navbar() {
   const isLoggedIn = false;
   const cartItems = useSelector((state) => state.cart.cartItems);
-  console.log(cartItems);
 
   return (
     <header className="max-w-5xl mx-auto px-4 py-6">

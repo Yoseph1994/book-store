@@ -34,9 +34,18 @@ export const cartSlice = createSlice({
     },
     removeFromCart: (state, action) => {
       const itemId = action.payload;
-      state.cartItems = state.cartItems.filter(
-        (cartItem) => cartItem._id !== itemId
-      );
+      state.cartItems = state.cartItems
+        .map((cartItem) => {
+          if (cartItem._id === itemId) {
+            if (cartItem.quantity > 1) {
+              return { ...cartItem, quantity: cartItem.quantity - 1 };
+            } else {
+              return null; // Mark for removal
+            }
+          }
+          return cartItem;
+        })
+        .filter((cartItem) => cartItem !== null);
     },
     updateQuantity: (state, action) => {
       const { itemId, quantity } = action.payload;
