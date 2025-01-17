@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { FaGoogle } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+import { useAuth } from "../context/AuthContext";
 
 const Register = () => {
   const {
@@ -10,9 +11,17 @@ const Register = () => {
     watch,
     formState: { errors },
   } = useForm();
+  const { registerUser } = useAuth();
   const [message, setMessage] = useState("");
   function onSubmit(data) {
     console.log(data);
+
+    try {
+      registerUser(data.email, data.password);
+      alert("User registered successfully");
+    } catch (error) {
+      setMessage(error.message);
+    }
   }
 
   function handleGoogleSignIn() {
