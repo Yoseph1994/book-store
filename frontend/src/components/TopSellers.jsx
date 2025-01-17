@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Card from "./Card";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -10,6 +10,7 @@ import { Pagination, Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
+import { useGetAllBooksQuery } from "../redux/features/services/BookApi";
 
 const categories = [
   "Choose a genre",
@@ -21,27 +22,18 @@ const categories = [
 
 const TopSellers = () => {
   const [selectedCategory, setSelectedCategory] = useState("Choose a genre");
-  const [books, setBooks] = useState([]);
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch("books.json");
-        const data = await response.json();
-        setBooks(data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
 
-    fetchData();
-  }, []);
+  const { data, isLoading } = useGetAllBooksQuery();
+  const books = data?.books;
 
   const filteredBooks =
     selectedCategory === "Choose a genre"
       ? books
       : books.filter(
-          (book) => book.category === selectedCategory.toLowerCase()
+          (book) => book?.category === selectedCategory.toLowerCase()
         );
+
+  if (isLoading) return <p>Loading...</p>;
 
   return (
     <div className="py-10">
@@ -87,8 +79,8 @@ const TopSellers = () => {
         modules={[Pagination, Navigation]}
         className="mySwiper"
       >
-        {filteredBooks.length > 0 &&
-          filteredBooks.map((book, index) => (
+        {filteredBooks?.length > 0 &&
+          filteredBooks?.map((book, index) => (
             <SwiperSlide key={index}>
               <Card book={book} />
             </SwiperSlide>
