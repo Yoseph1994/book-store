@@ -1,18 +1,18 @@
 import { Outlet } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-import { AuthProvider } from "./context/AuthContext";
+import { AuthProvide } from "./context/AuthContext";
 
 function App() {
   return (
     <>
-      <AuthProvider>
+      <AuthProvide>
         <Navbar />
         <main className="min-h-screen max-w-5xl mx-auto px-4 py-6 font-primary">
           <Outlet />
         </main>
         <Footer />
-      </AuthProvider>
+      </AuthProvide>
     </>
   );
 }
